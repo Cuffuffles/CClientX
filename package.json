@@ -1,0 +1,19 @@
+{
+  "name": "cclientx",
+  "version": "1.0.0",
+  "description": "Rewrite of CClient",
+  "main": "js/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cuffuffles/CClientX.git"
+  },
+  "author": "Cuffuffles",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Cuffuffles/CClientX/issues"
+  },
+  "homepage": "https://github.com/Cuffuffles/CClientX#readme"
+}
