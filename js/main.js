@@ -1,22 +1,23 @@
-const electron = require('electron');
+const electron = require("electron");
 const { app, BrowserWindow, Menu } = electron;
-const path = require('path');
-let os = require('os');
+const { update } = require("./updater.js");
+const path = require("path");
+let os = require("os");
 let win = null, splash = null;
 
-app.commandLine.appendSwitch('disable-frame-rate-limit');
-app.commandLine.appendSwitch('disable-gpu-vsync');
-app.commandLine.appendSwitch('ignore-gpu-blacklist');
-app.commandLine.appendSwitch('disable-breakpad');
-app.commandLine.appendSwitch('disable-component-update');
-app.commandLine.appendSwitch('disable-print-preview');
-app.commandLine.appendSwitch('disable-metrics');
-app.commandLine.appendSwitch('disable-metrics-repo');
-app.commandLine.appendSwitch('disable-bundled-ppapi-flash');
-app.commandLine.appendSwitch('disable-logging');
-app.commandLine.appendSwitch('webrtc-max-cpu-consumption-percentage=100');
-if(os.cpus()[0].model.includes('AMD')) {
-    app.commandLine.appendSwitch('enable-zero-copy');
+app.commandLine.appendSwitch("disable-frame-rate-limit");
+app.commandLine.appendSwitch("disable-gpu-vsync");
+app.commandLine.appendSwitch("ignore-gpu-blacklist");
+app.commandLine.appendSwitch("disable-breakpad");
+app.commandLine.appendSwitch("disable-component-update");
+app.commandLine.appendSwitch("disable-print-preview");
+app.commandLine.appendSwitch("disable-metrics");
+app.commandLine.appendSwitch("disable-metrics-repo");
+app.commandLine.appendSwitch("disable-bundled-ppapi-flash");
+app.commandLine.appendSwitch("disable-logging");
+app.commandLine.appendSwitch("webrtc-max-cpu-consumption-percentage=100");
+if(os.cpus()[0].model.includes("AMD")) {
+    app.commandLine.appendSwitch("enable-zero-copy");
 }
 
 //Allow custom arguments to pass through
@@ -25,7 +26,7 @@ for(var argument in process.argv) {
 }
 
 //Setup Mac shortcuts
-if(process.platform == 'darwin') {
+if(process.platform == "darwin") {
     var template = [{
         label: "Application",
         submenu: [
@@ -53,7 +54,7 @@ function createSplash() {
     splash = new BrowserWindow({
         width: 700,
         height: 300,
-        backgroundColor: '#000000',
+        backgroundColor: "#000000",
         center: true,
         alwaysOnTop: true,
         frame: false,
@@ -62,12 +63,37 @@ function createSplash() {
             nodeIntergration: false
         }
     });
-    splash.loadFile(path.join(__dirname, '../html/splash.html'));
-    splash.once('ready-to-show', () => splash.show());
+    splash.loadFile(path.join(__dirname, "../html/splash.html"));
+    splash.once("ready-to-show", () => splash.show());
+    update();
 }
 
-app.on('ready', createSplash);
+function createGameWindow() {
+    const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
+    win = new BrowserWindow({
+        backgroundColor: "#000000",
+        show: false,
+        webPreferences: {
+            nodeIntergration: false
+        }
+    });
+    win.loadURL("https://krunker.io");
+    win.setFullScreen(true);
+    win.once("ready-to-show", () => {
+        win.show();
+        splash.close();
+        splash = null;
+    });
+}
 
-app.on('window-all-closed', () => {
+app.on("ready", createSplash);
+
+app.on("window-all-closed", () => {
     app.quit();
 });
+
+function test() {
+    console.log("test");
+}
+
+module.exports = { createGameWindow, test };
