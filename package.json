@@ -18,5 +18,8 @@
   "homepage": "https://github.com/Cuffuffles/CClientX#readme",
   "devDependencies": {
     "electron": "^7.0.0"
+  },
+  "dependencies": {
+    "minimist": ">=1.2.2"
   }
 }
