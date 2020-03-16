@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Cuffuffles/CClientX/issues"
   },
-  "homepage": "https://github.com/Cuffuffles/CClientX#readme"
+  "homepage": "https://github.com/Cuffuffles/CClientX#readme",
+  "devDependencies": {
+    "electron": "^7.0.0"
+  }
 }
