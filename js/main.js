@@ -92,8 +92,4 @@ app.on("window-all-closed", () => {
     app.quit();
 });
 
-function test() {
-    console.log("test");
-}
-
-module.exports = { createGameWindow, test };
+module.exports = { createGameWindow };
