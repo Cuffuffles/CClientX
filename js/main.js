@@ -1,5 +1,5 @@
 const electron = require("electron");
-const { app, BrowserWindow, Menu } = electron;
+const { app, BrowserWindow, Menu, ipcMain, globalShortcut } = electron;
 const { update } = require("./updater.js");
 const path = require("path");
 let os = require("os");
@@ -74,7 +74,8 @@ function createGameWindow() {
         backgroundColor: "#000000",
         show: false,
         webPreferences: {
-            nodeIntergration: false
+            nodeIntergration: false,
+            preload: path.join(__dirname, "preload.js")
         }
     });
     win.loadURL("https://krunker.io");
@@ -83,10 +84,20 @@ function createGameWindow() {
         win.show();
         splash.close();
         splash = null;
+        win.webContents.openDevTools();
     });
 }
 
-app.on("ready", createSplash);
+ipcMain.on("close", () => {
+    app.quit();
+});
+
+app.on("ready", () => {
+    createSplash();
+    globalShortcut.register("Escape", () => {
+        win.blur();
+    });
+});
 
 app.on("window-all-closed", () => {
     app.quit();
