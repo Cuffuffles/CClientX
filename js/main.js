@@ -1,5 +1,5 @@
 const electron = require("electron");
-const { app, BrowserWindow, Menu, ipcMain, globalShortcut } = electron;
+const { app, BrowserWindow, Menu, ipcMain, globalShortcut, shell } = electron;
 const { update } = require("./updater.js");
 const path = require("path");
 let os = require("os");
@@ -92,10 +92,14 @@ ipcMain.on("close", () => {
     app.quit();
 });
 
+ipcMain.on("openDiscord", () => {
+    shell.openExternal("https://discord.gg/5ZMvrGT");
+});
+
 app.on("ready", () => {
     createSplash();
     globalShortcut.register("Escape", () => {
-        win.blur();
+        win.webContents.send('exitPointerLock');
     });
 });
 
