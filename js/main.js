@@ -86,6 +86,30 @@ function createGameWindow() {
         splash = null;
         win.webContents.openDevTools();
     });
+    win.webContents.on('new-window', (event, url, frameName, disposition, options) => {
+        if(!url) return;
+        if(url.startsWith('https://twitch.tv/') || url.startsWith('https://www.twitch.tv') || url.startsWith('https://www.youtube')) {
+			event.preventDefault();
+			shell.openExternal(url);
+            return;
+        } else {
+            event.preventDefault();
+            const newWin = new BrowserWindow({
+                width: width * 0.75,
+                height: height * 0.9,
+                webContents: options.webContents,
+                show: true, 
+                webPreferences: {
+                    nodeIntergration: false
+                    //preload: path.join(__dirname, 'loadSocial.js')
+                }
+            });
+            if(!options.webContents) {
+                newWin.loadURL(url);
+            }
+            event.newGuest = newWin;
+		}
+    });
 }
 
 ipcMain.on("close", () => {

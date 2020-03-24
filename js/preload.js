@@ -8,9 +8,10 @@ ipcRenderer.on('exitPointerLock', () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    CF.renderLog("loaded");
     addExit();
     watermark();
+    CF.fixImport();
+    CF.fixLinks();
 });
 
 function addExit() {
