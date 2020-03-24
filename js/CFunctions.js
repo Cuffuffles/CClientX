@@ -8,17 +8,17 @@ CFunctions.prototype.getCSetting = function(name, value){
     localStorage.setItem("cx"+name, value);
 }
 CFunctions.prototype.toggleDark = function(){
-    if(getCCSettings('dark') === null) setCCSettings('dark', 'unchecked');
-    if(getCCSettings('dark') === 'unchecked') {
-        setCCSettings('dark', 'checked');
+    if(this.getCSettings('dark') === null) this.setCSettings('dark', 'unchecked');
+    if(this.getCSettings('dark') === 'unchecked') {
+        this.setCSettings('dark', 'checked');
     } else {
-        setCCSettings('dark', 'unchecked');
+        this.setCSettings('dark', 'unchecked');
     }
     this.darkMode();
 }
 CFunctions.prototype.darkMode = function(){
-            if(getCCSettings('dark') === null) setCCSettings('dark', 'unchecked');
-            if(getCCSettings('dark') === 'checked') {
+            if(this.getCSettings('dark') === null) this.setCSettings('dark', 'unchecked');
+            if(this.getCSettings('dark') === 'checked') {
             	//document.getElementsByClassName("settText")[1].style.color="color: rgba(255,255,255,0.3);"
 				window.document.getElementsByTagName("head")[0].innerHTML+=`<style id="ccdark">
 				.settText.floarR {
