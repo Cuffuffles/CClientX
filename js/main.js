@@ -1,134 +1,80 @@
-const electron = require("electron");
-const { app, BrowserWindow, Menu, ipcMain, globalShortcut, shell } = electron;
-const { update } = require("./updater.js");
-const path = require("path");
-let os = require("os");
-let win = null, splash = null;
+const gui = require("nw.gui");
+const io = require("socket.io")();
+var gameWindow = null, splashWindow = null;
+io.listen(8081);
 
-app.commandLine.appendSwitch("disable-frame-rate-limit");
-app.commandLine.appendSwitch("disable-gpu-vsync");
-app.commandLine.appendSwitch("ignore-gpu-blacklist");
-app.commandLine.appendSwitch("disable-breakpad");
-app.commandLine.appendSwitch("disable-component-update");
-app.commandLine.appendSwitch("disable-print-preview");
-app.commandLine.appendSwitch("disable-metrics");
-app.commandLine.appendSwitch("disable-metrics-repo");
-app.commandLine.appendSwitch("disable-bundled-ppapi-flash");
-app.commandLine.appendSwitch("disable-logging");
-app.commandLine.appendSwitch("webrtc-max-cpu-consumption-percentage=100");
-if(os.cpus()[0].model.includes("AMD")) {
-    app.commandLine.appendSwitch("enable-zero-copy");
+function createGameWindow() {
+    gui.Window.open("https://krunker.io", { "inject_js_start" : "./js/bundle.js", "show" : false }, win => {
+        gameWindow = win;
+        gameWindow.enterFullscreen();
+        gameWindow.on("enter-fullscreen", () => {
+            gameWindow.show();
+            splashWindow.close();
+        });
+        createShortcuts();
+        io.on("connection", socket => {
+            socket.on("preloaded", () => {
+                createListeners();
+            });
+        });
+        win.on('new-win-policy', function(frame, url, policy) {
+            if(!url) return;
+            if(url.startsWith('https://twitch.tv/') || url.startsWith('https://www.twitch.tv') || url.startsWith('https://www.youtube')) {
+                policy.ignore();
+                nw.Shell.openExternal(url);
+                return;
+            } else {
+                policy.setNewWindowManifest({"position" : "center", "width": Math.round(screen.width * 0.75), "height": Math.round(screen.height * 0.9)});
+                policy.forceNewWindow();
+            }
+        });
+    });  
 }
 
-//Allow custom arguments to pass through
-for(var argument in process.argv) {
-    app.commandLine.appendSwitch(argument);
+function browserLog(string) {
+    gameWindow.window.console.log(string);
 }
 
-//Setup Mac shortcuts
-if(process.platform == "darwin") {
-    var template = [{
-        label: "Application",
-        submenu: [
-            { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
-            { type: "separator" },
-            { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }}
-        ]}, {
-        label: "Edit",
-        submenu: [
-            { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
-            { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
-            { type: "separator" },
-            { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
-            { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
-            { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
-            { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
-        ]}
-    ];
-    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
-} else {
-    Menu.setApplicationMenu(null);
+function createListeners() {
+    browserLog("listen loaded");
+    let browser = gameWindow.window;
+    browser.menuExit.addEventListener('click', () => { gameWindow.close(); });
+    browser.clientVersion.addEventListener('click', () => { nw.Shell.openExternal("https://discord.gg/5ZMvrGT")} );
+}
+
+function createShortcuts() {
+    let F4 = {
+        key : "F4",
+        active : function() {
+            gameWindow.window.location = "https://krunker.io";
+        }
+    },
+    F5 = {
+        key : "F5",
+        active : function() {
+            gameWindow.reload();
+        }
+    },
+    F11 = {
+        key : "F11",
+        active : toggleFS
+    }
+    let shortcutF4 = new gui.Shortcut(F4), shortcutF5 = new gui.Shortcut(F5), shortcutF11 = new gui.Shortcut(F11);
+    gui.App.registerGlobalHotKey(shortcutF4);
+    gui.App.registerGlobalHotKey(shortcutF5);
+    gui.App.registerGlobalHotKey(shortcutF11);
+}
+
+function toggleFS() {
+    gameWindow.toggleFullscreen();
 }
 
 function createSplash() {
-    splash = new BrowserWindow({
-        width: 700,
-        height: 300,
-        backgroundColor: "#000000",
-        center: true,
-        alwaysOnTop: true,
-        frame: false,
-        show: false,
-        webPreferences: {
-            nodeIntergration: false
-        }
-    });
-    splash.loadFile(path.join(__dirname, "../html/splash.html"));
-    splash.once("ready-to-show", () => splash.show());
-    update();
-}
-
-function createGameWindow() {
-    const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
-    win = new BrowserWindow({
-        backgroundColor: "#000000",
-        show: false,
-        webPreferences: {
-            nodeIntergration: false,
-            preload: path.join(__dirname, "preload.js")
-        }
-    });
-    win.loadURL("https://krunker.io");
-    win.setFullScreen(true);
-    win.once("ready-to-show", () => {
-        win.show();
-        splash.close();
-        splash = null;
-        win.webContents.openDevTools();
-    });
-    win.webContents.on('new-window', (event, url, frameName, disposition, options) => {
-        if(!url) return;
-        if(url.startsWith('https://twitch.tv/') || url.startsWith('https://www.twitch.tv') || url.startsWith('https://www.youtube')) {
-			event.preventDefault();
-			shell.openExternal(url);
-            return;
-        } else {
-            event.preventDefault();
-            const newWin = new BrowserWindow({
-                width: width * 0.75,
-                height: height * 0.9,
-                webContents: options.webContents,
-                show: true, 
-                webPreferences: {
-                    nodeIntergration: false
-                    //preload: path.join(__dirname, 'loadSocial.js')
-                }
-            });
-            if(!options.webContents) {
-                newWin.loadURL(url);
-            }
-            event.newGuest = newWin;
-		}
+    gui.Window.open("./html/splash.html", { "width" : 700, "height" : 300, "frame" : false, "position" : "center", "always_on_top" : true }, win => {
+        splashWindow = win;
+        //Insert updater code here
+        createGameWindow();
     });
 }
 
-ipcMain.on("close", () => {
-    app.quit();
-});
-
-ipcMain.on("openDiscord", () => {
-    shell.openExternal("https://discord.gg/5ZMvrGT");
-});
-
-app.on("ready", () => {
-    createSplash();
-    globalShortcut.register("Escape", () => {
-        win.webContents.send('exitPointerLock');
-    });
-});
-
-app.on("window-all-closed", () => {
-    app.quit();
-});
-
-module.exports = { createGameWindow };
+createSplash();

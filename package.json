@@ -1,10 +1,11 @@
 {
   "name": "cclientx",
   "version": "1.0.0",
-  "description": "Rewrite of CClient",
+  "description": "Rewrite of CClient on nwjs",
   "main": "js/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "nw",
+    "build": "browserify ./js/client.js -o ./js/bundle.js"
   },
   "repository": {
     "type": "git",
@@ -17,9 +18,9 @@
   },
   "homepage": "https://github.com/Cuffuffles/CClientX#readme",
   "devDependencies": {
-    "electron": "^7.0.0"
+    "browserify": "^16.5.0",
+    "nw": "^0.44.5",
+    "socket.io": "^2.3.0"
   },
-  "dependencies": {
-    "minimist": ">=1.2.2"
-  }
+  "dependencies": {}
 }
