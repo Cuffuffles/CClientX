@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Rewrite of CClient on nwjs",
   "main": "js/main.js",
+  "window": {
+    "title": "CClientX",
+    "icon": "img/app.png"
+  },
   "scripts": {
     "start": "nw",
     "build": "browserify ./js/client.js -o ./js/bundle.js"
