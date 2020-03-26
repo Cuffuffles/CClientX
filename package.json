@@ -22,5 +22,11 @@
     "nw": "^0.44.5",
     "socket.io": "^2.3.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "webkit": {
+    "page-cache": false,
+    "java": false,
+    "plugin": false
+  },
+  "chromium-args": "--disable-frame-rate-limit --disable-gpu-vsync --ignore-gpu-blacklist --disable-breakpad --disable-component-update --disable-print-preview --disable-metrics --disable-metrics-repo --disable-bundled-ppapi-flash --disable-logging --webrtc-max-cpu-consumption-percentage=100"
 }
