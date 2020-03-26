@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/Cuffuffles/CClientX#readme",
   "devDependencies": {
-    "nw": "^0.44.5"
+    "nw": "^0.44.5-sdk"
   },
   "dependencies": {
     "browserify": "^16.5.0",

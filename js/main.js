@@ -30,7 +30,7 @@ function createGameWindow() {
                 nw.Shell.openExternal(url);
                 return;
             } else {
-                policy.setNewWindowManifest({"position" : "center", "width": Math.round(screen.width * 0.75), "height": Math.round(screen.height * 0.9)});
+                policy.setNewWindowManifest({"inject_js_start" : "./js/social.js", "width": Math.round(screen.width * 0.75), "height": Math.round(screen.height * 0.9), "position" : "center"});
                 policy.forceNewWindow();
             }
         });
