@@ -1,5 +1,6 @@
 const io = require("socket.io-client");
 const socket = io("http://localhost:8081");
+var versionNum = "1.0.0";
 var _rAF;
 
 function init() {
@@ -83,7 +84,7 @@ function addExit() {
 
 function watermark() {
     mapInfoHolder.insertAdjacentHTML("beforeend", "<div id='clientVersion' style='font-size: 15px; color: #000'></div>");
-    clientVersion.innerHTML = "<a style='color: #000'>CClientX</a>";
+    clientVersion.innerHTML = "<a style='color: #000'>CClientX " + versionNum + "</a>";
 }
 
 function fixLinks() {

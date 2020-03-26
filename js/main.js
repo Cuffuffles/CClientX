@@ -1,6 +1,12 @@
 const gui = require("nw.gui");
+const https = require("follow-redirects").https;
+const semver = require("semver");
+const fs = require("fs");
+const child_process = require("child_process");
+const $ = jQuery = require("jquery");
 const io = require("socket.io")();
 var gameWindow = null, splashWindow = null;
+var versionNum = "1.0.0";
 io.listen(8081);
 
 function createGameWindow() {
@@ -73,7 +79,37 @@ function createSplash() {
     gui.Window.open("./html/splash.html", { "width" : 700, "height" : 300, "frame" : false, "position" : "center", "always_on_top" : true }, win => {
         splashWindow = win;
         //Insert updater code here
-        createGameWindow();
+        $.get('https://api.github.com/repos/Cuffuffles/CClientX/releases/latest', function (data) {
+            var newVersion = data.tag_name;
+            if(semver.gt(newVersion, versionNum)) {
+                //update available
+                var dlPath = nw.App.getStartPath();
+                splashWindow.window.splashImage.src = "../img/updating.png";
+                $.get('https://api.github.com/repos/Cuffuffles/CClientX/releases/latest', function (data) {
+                    const pUrl = data.assets[0].browser_download_url;
+                    var req = https.get(pUrl, function(res) {
+                        //var fileSize = res.headers['content-length'];
+                        res.setEncoding('binary');
+                        var a = "";
+                        res.on('data', function(chunk) {
+                            a += chunk;
+                            //instructions.innerHTML = 'Downloading Update: ' + Math.round(100 * a.length / fileSize) + '%';
+                        });
+                        res.on('end', function() {
+                            fs.writeFile(dlPath + '/package.nw', a, 'binary', function(err) {
+                                if(err) console.log(err);
+                                //update done, restart
+                                var child = child_process.spawn(process.execPath, [], {detached : true});
+                                child.unref();
+                                gui.App.quit();
+                            });
+                        });
+                    });
+                });
+            } else {
+                createGameWindow();
+            }
+        });
     });
 }
 
