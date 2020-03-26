@@ -24,7 +24,6 @@
   },
   "dependencies": {},
   "webkit": {
-    "page-cache": false,
     "java": false,
     "plugin": false
   },
