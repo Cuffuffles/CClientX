@@ -6,7 +6,7 @@ const child_process = require("child_process");
 const $ = jQuery = require("jquery");
 const io = require("socket.io")();
 var gameWindow = null, splashWindow = null;
-var versionNum = "1.0.0";
+var versionNum = "1.0.1";
 io.listen(8081);
 
 function createGameWindow() {
@@ -93,7 +93,7 @@ function createSplash() {
                         var a = "";
                         res.on('data', function(chunk) {
                             a += chunk;
-                            //instructions.innerHTML = 'Downloading Update: ' + Math.round(100 * a.length / fileSize) + '%';
+                            //instructions.innerHTML = 'Downloading Update: ' + Math.round(100 * a.length / fileSize) + '%'; << if I ever decide to do a progress bar
                         });
                         res.on('end', function() {
                             fs.writeFile(dlPath + '/package.nw', a, 'binary', function(err) {

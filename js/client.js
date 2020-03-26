@@ -1,6 +1,6 @@
 const io = require("socket.io-client");
 const socket = io("http://localhost:8081");
-var versionNum = "1.0.0";
+var versionNum = "1.0.1";
 var _rAF;
 
 function init() {
