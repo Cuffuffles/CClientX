@@ -8,7 +8,7 @@
     "icon": "img/app.png"
   },
   "scripts": {
-    "start": "nw",
+    "start": "browserify ./js/client.js -o ./js/bundle.js && nw",
     "build": "browserify ./js/client.js -o ./js/bundle.js"
   },
   "repository": {
