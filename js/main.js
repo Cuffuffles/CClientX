@@ -4,9 +4,12 @@ const semver = require("semver");
 const fs = require("fs");
 const child_process = require("child_process");
 const $ = jQuery = require("jquery");
+const rpclient = require("discord-rpc");
+const rpc = new rpclient.Client({ transport: "ipc" });
+const clientId = "692917532105113611";
 const io = require("socket.io")();
 var gameWindow = null, splashWindow = null;
-var versionNum = "1.0.1";
+var versionNum = "1.0.2";
 io.listen(8081);
 
 function createGameWindow() {
@@ -18,12 +21,17 @@ function createGameWindow() {
             splashWindow.close();
         });
         createShortcuts();
+        io.once("connection", socket => {
+            socket.once("preloaded", () => {
+                initRPC();
+            });
+        });
         io.on("connection", socket => {
             socket.on("preloaded", () => {
                 createListeners();
             });
         });
-        win.on('new-win-policy', function(frame, url, policy) {
+        win.on("new-win-policy", function(frame, url, policy) {
             if(!url) return;
             if(url.startsWith('https://twitch.tv/') || url.startsWith('https://www.twitch.tv') || url.startsWith('https://www.youtube')) {
                 policy.ignore();
@@ -35,6 +43,30 @@ function createGameWindow() {
             }
         });
     });  
+}
+
+function initRPC() {
+    browserLog("RPC init");
+    rpc.login({ clientId }).catch(console.error);
+    rpc.on("ready", () => {
+        setTimeout(setActivity, 3000);
+        setInterval(setActivity, 15e3);
+    });
+}
+
+async function setActivity() {
+    let url = gameWindow.window.location.href;
+    let game = gameWindow.window.getGameActivity();
+    if(game.id == null) return;
+    let timeLeft = Math.floor(Date.now() / 1000) + game.time;
+    let matchString = game.mode + " on " + game.map;
+    rpc.setActivity({
+        details: matchString,
+        //state: playerString,
+        largeImageKey: "main",
+        largeImageText: game.user,
+        endTimestamp: timeLeft
+    });
 }
 
 function browserLog(string) {
