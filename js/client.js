@@ -4,7 +4,6 @@ var versionNum = "1.0.3";
 
 function init() {
     console.log("init");
-    _rAF = window.requestAnimFrame;
     addExit();
     watermark();
     fixLinks();
