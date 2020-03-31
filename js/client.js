@@ -1,12 +1,13 @@
 const io = require("socket.io-client");
 const socket = io("http://localhost:8081");
-var versionNum = "1.0.3";
+var versionNum = "1.0.4";
 
 function init() {
     console.log("init");
     addExit();
     watermark();
     fixLinks();
+    donateButton();
 
     //Tell main we're done with preload
     socket.emit("preloaded");
@@ -18,6 +19,14 @@ function addExit() {
     var buttonHtml = "<div class='button small buttonR' id='menuExit' onmouseenter='playTick()'>X</div>";
     subLogoButtons.insertAdjacentHTML("beforeend", buttonHtml);
     subLogoButtons.style.width = "860px";
+}
+
+function donateButton() {
+    var menuRight = document.getElementsByClassName("headerBarRight")[0];
+    var buttonHtml = '<div class="button small" id="donate" onclick="window.open(\'https://krunker.io/social.html#donate\')" onmouseenter="playTick()">Donate KR</div>';
+    menuRight.insertAdjacentHTML('afterbegin', buttonHtml);
+    menuFPSDisplay.style.width = "75px";
+    menuFPSDisplay.style.textAlign = "right";
 }
 
 function watermark() {

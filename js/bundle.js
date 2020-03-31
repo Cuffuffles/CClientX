@@ -1,13 +1,14 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 const io = require("socket.io-client");
 const socket = io("http://localhost:8081");
-var versionNum = "1.0.3";
+var versionNum = "1.0.4";
 
 function init() {
     console.log("init");
     addExit();
     watermark();
     fixLinks();
+    donateButton();
 
     //Tell main we're done with preload
     socket.emit("preloaded");
@@ -19,6 +20,14 @@ function addExit() {
     var buttonHtml = "<div class='button small buttonR' id='menuExit' onmouseenter='playTick()'>X</div>";
     subLogoButtons.insertAdjacentHTML("beforeend", buttonHtml);
     subLogoButtons.style.width = "860px";
+}
+
+function donateButton() {
+    var menuRight = document.getElementsByClassName("headerBarRight")[0];
+    var buttonHtml = '<div class="button small" id="donate" onclick="window.open(\'https://krunker.io/social.html#donate\')" onmouseenter="playTick()">Donate KR</div>';
+    menuRight.insertAdjacentHTML('afterbegin', buttonHtml);
+    menuFPSDisplay.style.width = "75px";
+    menuFPSDisplay.style.textAlign = "right";
 }
 
 function watermark() {
