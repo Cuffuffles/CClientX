@@ -9,7 +9,7 @@ const rpc = new rpclient.Client({ transport: "ipc" });
 const clientId = "692917532105113611";
 const io = require("socket.io")();
 var gameWindow = null, splashWindow = null;
-var versionNum = "1.0.6";
+var versionNum = "1.0.7";
 io.listen(8081);
 
 function createGameWindow() {
