@@ -36,5 +36,5 @@
     "java": false,
     "plugin": false
   },
-  "chromium-args": "--disable-frame-rate-limit --disable-gpu-vsync --ignore-gpu-blacklist --disable-breakpad --disable-component-update --disable-print-preview --disable-metrics --disable-metrics-repo --disable-bundled-ppapi-flash --disable-logging --webrtc-max-cpu-consumption-percentage=100 --enable-zero-copy --disable-2d-canvas-clip-aa --no-referrers --disable-hang-monitor --enable-future-v8-vm-features --enable-javascript-harmony --smooth-scrolling --use-angle=d3d9"
+  "chromium-args": "--disable-frame-rate-limit --disable-gpu-vsync --ignore-gpu-blacklist --disable-breakpad --disable-component-update --disable-print-preview --disable-metrics --disable-metrics-repo --disable-bundled-ppapi-flash --disable-logging --webrtc-max-cpu-consumption-percentage=100 --enable-zero-copy --disable-2d-canvas-clip-aa --no-referrers --disable-hang-monitor --enable-future-v8-vm-features --enable-javascript-harmony --smooth-scrolling --use-angle=gl"
 }

@@ -24,10 +24,19 @@ function addExit() {
 
 function donateButton() {
     var menuRight = document.getElementsByClassName("headerBarRight")[0];
-    var buttonHtml = '<div class="button small" id="donate" onclick="window.open(\'https://krunker.io/social.html#donate\')" onmouseenter="playTick()">Donate KR</div>';
+    var buttonHtml = '<div class="button" id="donate" onclick="window.open(\'https://krunker.io/social.html#donate\')" onmouseenter="playTick()">Donate KR</div>';
     menuRight.insertAdjacentHTML('afterbegin', buttonHtml);
     menuFPSDisplay.style.width = "75px";
     menuFPSDisplay.style.textAlign = "right";
+    donate.style.paddingTop = "5px";
+    donate.style.paddingBottom = "13px";
+    donate.style.paddingLeft = "22px";
+    donate.style.paddingRight = "22px";
+    donate.style.fontSize = "16px";
+    donate.style.marginLeft = "3px";
+    donate.style.marginRight = "3px";
+    donate.style.marginTop = "5px";
+    menuRegionLabel.style.marginLeft = "40px";
 }
 
 function watermark() {
