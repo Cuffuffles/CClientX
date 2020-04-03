@@ -7,6 +7,7 @@
     "title": "CClientX",
     "icon": "img/app.png"
   },
+  "bg-script": "js/bg.js",
   "scripts": {
     "start": "browserify ./js/client.js -o ./js/bundle.js && nw",
     "build": "browserify ./js/client.js -o ./js/bundle.js"

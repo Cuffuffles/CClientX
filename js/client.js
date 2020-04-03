@@ -1,12 +1,11 @@
 const io = require("socket.io-client");
 const socket = io("http://localhost:8081");
-var versionNum = "1.0.7";
+var versionNum = "1.0.8";
 
 function init() {
     console.log("init");
     addExit();
     watermark();
-    fixLinks();
     donateButton();
 
     //Tell main we're done with preload
@@ -43,17 +42,6 @@ function watermark() {
     clientVersion.innerHTML = "<a style='color: #000'>CClientX " + versionNum + "</a>";
 }
 
-function fixLinks() {
-    $(document).on('click', 'a[href^="/social"]', function(event) {
-        event.preventDefault();
-        window.open(this.href);
-    });
-    $(document).on('click', 'a[href^="/viewer"]', function(event) {
-        event.preventDefault();
-        window.open(this.href);
-    });
-}
-
 function setCXSettings(key, value) {
     localStorage.setItem('cx' + key, value);
 }
@@ -67,7 +55,7 @@ function getClassIndex() {
 }
 
 function isDefined() {
-    if(typeof windows !== 'undefined' && typeof $ !== 'undefined') {
+    if(typeof windows !== 'undefined') {
         init();
     } else {
         setTimeout(() => {
