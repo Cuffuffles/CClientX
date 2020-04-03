@@ -10,7 +10,8 @@
   "bg-script": "js/bg.js",
   "scripts": {
     "start": "browserify ./js/client.js -o ./js/bundle.js && nw",
-    "build": "browserify ./js/client.js -o ./js/bundle.js"
+    "build": "browserify ./js/client.js -o ./js/bundle.js",
+    "winCap": "nw --use-angle=gl"
   },
   "repository": {
     "type": "git",
@@ -37,5 +38,5 @@
     "java": false,
     "plugin": false
   },
-  "chromium-args": "--disable-frame-rate-limit --disable-gpu-vsync --ignore-gpu-blacklist --disable-breakpad --disable-component-update --disable-print-preview --disable-metrics --disable-metrics-repo --disable-bundled-ppapi-flash --disable-logging --webrtc-max-cpu-consumption-percentage=100 --enable-zero-copy --disable-2d-canvas-clip-aa --no-referrers --disable-hang-monitor --enable-future-v8-vm-features --enable-javascript-harmony --smooth-scrolling --use-angle=gl"
+  "chromium-args": "--disable-frame-rate-limit --disable-gpu-vsync --ignore-gpu-blacklist --disable-breakpad --disable-component-update --disable-print-preview --disable-metrics --disable-metrics-repo --disable-bundled-ppapi-flash --disable-logging --webrtc-max-cpu-consumption-percentage=100 --enable-zero-copy --disable-2d-canvas-clip-aa --no-referrers --disable-hang-monitor --enable-future-v8-vm-features --enable-javascript-harmony --smooth-scrolling"
 }
