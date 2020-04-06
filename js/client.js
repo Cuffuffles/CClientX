@@ -1,16 +1,26 @@
+const $ = jQuery = require("jquery");
 const io = require("socket.io-client");
 const socket = io("http://localhost:8081");
-var versionNum = "1.0.9";
+var versionNum = "1.1.0";
 
 function init() {
     console.log("init");
     addExit();
     watermark();
     donateButton();
+    fixLinks();
+
 
     //Tell main we're done with preload
     socket.emit("preloaded");
     socket.close();
+}
+
+function fixLinks() {
+    $(document).on('click', 'a[href^="/viewer"]', function(event) {
+        event.preventDefault();
+        window.open(this.href);
+    });
 }
 
 

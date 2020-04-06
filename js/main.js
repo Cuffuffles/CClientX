@@ -9,7 +9,7 @@ const rpc = new rpclient.Client({ transport: "ipc" });
 const clientId = "692917532105113611";
 const io = require("socket.io")();
 var gameWindow = null, splashWindow = null;
-var versionNum = "1.0.9";
+var versionNum = "1.1.0";
 io.listen(8081);
 
 function createGameWindow() {
@@ -116,16 +116,18 @@ function createSplash() {
             if(semver.gt(newVersion, versionNum)) {
                 //update available
                 var dlPath = nw.App.getStartPath();
-                splashWindow.window.splashImage.src = "../img/updating.png";
+                //splashWindow.window.splashImage.src = "../img/updating.png";
+                splashWindow.window.bar.style.width = "0%";
+                splashWindow.window.dlProgress.style.display = "block";
                 $.get('https://api.github.com/repos/Cuffuffles/CClientX/releases/latest', function (data) {
                     const pUrl = data.assets[0].browser_download_url;
                     var req = https.get(pUrl, function(res) {
-                        //var fileSize = res.headers['content-length'];
+                        var fileSize = res.headers['content-length'];
                         res.setEncoding('binary');
                         var a = "";
                         res.on('data', function(chunk) {
                             a += chunk;
-                            //instructions.innerHTML = 'Downloading Update: ' + Math.round(100 * a.length / fileSize) + '%'; << if I ever decide to do a progress bar
+                            splashWindow.window.bar.style.width = Math.round(100 * a.length / fileSize) + '%';
                         });
                         res.on('end', function() {
                             fs.writeFile(dlPath + '/package.nw', a, 'binary', function(err) {
