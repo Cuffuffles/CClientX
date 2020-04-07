@@ -9,7 +9,7 @@ const rpc = new rpclient.Client({ transport: "ipc" });
 const clientId = "692917532105113611";
 const io = require("socket.io")();
 var gameWindow = null, splashWindow = null;
-var versionNum = "1.1.0";
+var versionNum = "1.1.1";
 io.listen(8081);
 
 function createGameWindow() {
@@ -38,7 +38,7 @@ function createGameWindow() {
                 nw.Shell.openExternal(url);
                 return;
             } else {
-                policy.setNewWindowManifest({"inject_js_start" : "./js/social.js", "width": Math.round(screen.width * 0.75), "height": Math.round(screen.height * 0.9), "position" : "center"});
+                policy.setNewWindowManifest({"inject_js_start" : "./js/socialBundle.js", "width": Math.round(screen.width * 0.75), "height": Math.round(screen.height * 0.9), "position" : "center"});
                 policy.forceNewWindow();
             }
         });

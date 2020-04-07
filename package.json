@@ -9,8 +9,8 @@
   },
   "bg-script": "js/bg.js",
   "scripts": {
-    "start": "browserify ./js/client.js -o ./js/bundle.js && nw",
-    "build": "browserify ./js/client.js -o ./js/bundle.js",
+    "start": "browserify ./js/client.js -o ./js/bundle.js && browserify ./js/social.js -o ./js/socialBundle.js && nw",
+    "build": "browserify ./js/client.js -o ./js/bundle.js && browserify ./js/social.js -o ./js/socialBundle.js",
     "winCap": "nw --use-angle=gl"
   },
   "repository": {

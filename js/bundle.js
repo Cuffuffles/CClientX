@@ -2,7 +2,7 @@
 const $ = jQuery = require("jquery");
 const io = require("socket.io-client");
 const socket = io("http://localhost:8081");
-var versionNum = "1.1.0";
+var versionNum = "1.1.1";
 
 function init() {
     console.log("init");
