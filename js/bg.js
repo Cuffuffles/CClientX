@@ -1,7 +1,11 @@
-chrome.webRequest.onBeforeRequest.addListener(() => {
+chrome.webRequest.onBeforeRequest.addListener(
+  () => {
     return {
-      redirectUrl : "https://i.imgur.com/osHufNd.png"
+      redirectUrl: "https://i.imgur.com/osHufNd.png",
     };
-    }, {
-    urls : ["*://*.krunker.io/img/logo_2.png"]
-    }, ["blocking"]);
+  },
+  {
+    urls: ["*://*.krunker.io/img/logo_2.png"],
+  },
+  ["blocking"]
+);
