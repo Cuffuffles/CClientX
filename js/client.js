@@ -1,7 +1,19 @@
 const $ = (jQuery = require("jquery"));
 const io = require("socket.io-client");
 const socket = io("http://localhost:8081");
-var versionNum = "1.1.2";
+var versionNum = "1.1.3";
+var weaponID = {
+  0: "ak",
+  1: "awp",
+  2: "smg",
+  3: "lmg",
+  4: "shot",
+  5: "rev",
+  6: "semi",
+  7: "rpg",
+  11: "bow",
+  12: "famas",
+};
 
 function init() {
   console.log("init");
@@ -126,9 +138,9 @@ function newEnterGame() {
 }
 
 function setSens(index) {
+  setSetting("aimSensitivityX", getCXSettings(weaponID[index] + "X"));
+  setSetting("aimSensitivityY", getCXSettings(weaponID[index] + "Y"));
   console.log("Class index " + index + " sens set");
-  setSetting("aimSensitivityX", getCXSettings(index + "X"));
-  setSetting("aimSensitivityY", getCXSettings(index + "Y"));
 }
 
 function sensCalc() {
