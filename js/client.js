@@ -1,7 +1,7 @@
 const $ = (jQuery = require("jquery"));
 const io = require("socket.io-client");
 const socket = io("http://localhost:8081");
-var versionNum = "1.1.1";
+var versionNum = "1.1.2";
 
 function init() {
   console.log("init");
@@ -62,7 +62,7 @@ function getCXSettings(key) {
 }
 
 function getClassIndex() {
-  return localStorage.getItem("classindex");
+  return getGameActivity().class.index;
 }
 
 function initLocalStorage() {
@@ -114,22 +114,100 @@ function initMenus() {
 
 function newEnterGame() {
   if (document.pointerLockElement !== null) {
-    setTimeout(() => {
-      console.log("enter game");
-    }, 100);
+    if (getCXSettings("scale") == "checked") {
+      sensCalc();
+      setTimeout(() => {
+        setSens(getClassIndex());
+      }, 100);
+    }
   } else {
     //pointer lock exit
   }
 }
 
+function setSens(index) {
+  console.log("Class index " + index + " sens set");
+  setSetting("aimSensitivityX", getCXSettings(index + "X"));
+  setSetting("aimSensitivityY", getCXSettings(index + "Y"));
+}
+
+function sensCalc() {
+  if (getCXSettings("scale") === "unchecked") return;
+  if (localStorage.getItem("kro_setngss_fov") === null) localStorage.setItem("kro_setngss_fov", "70");
+  if (localStorage.getItem("kro_setngss_sensitivityX") === null) localStorage.setItem("kro_setngss_sensitivityX", "1");
+  if (localStorage.getItem("kro_setngss_sensitivityY") === null) localStorage.setItem("kro_setngss_sensitivityY", "1");
+  var fov = localStorage.getItem("kro_setngss_fov");
+  var hipSensX = localStorage.getItem("kro_setngss_sensitivityX");
+  var hipSensY = localStorage.getItem("kro_setngss_sensitivityY");
+  var distance = getCXSettings("relAds");
+  var width = $(window).width();
+  var height = $(window).height();
+  if (!(localStorage.getItem("kro_setngss_aspectRatio") === null || localStorage.getItem("kro_setngss_aspectRatio") == "")) {
+    var aspectString = localStorage.getItem("kro_setngss_aspectRatio").split("x");
+    if (Number.isFinite(parseInt(aspectString[0])) && Number.isFinite(parseInt(aspectString[1]))) {
+      width = aspectString[0];
+      height = aspectString[1];
+    }
+  }
+  console.log(width);
+  console.log(height);
+  var adsScale = {
+    ak: 1.6,
+    awp: 2.7,
+    smg: 1.65,
+    lmg: 1.3,
+    shot: 1.25,
+    rev: 1.4,
+    semi: 2.1,
+    rpg: 1.5,
+    bow: 1.4,
+    famas: 1.5,
+  };
+  var adsFov = {
+    ak: fov / adsScale.ak,
+    awp: fov / adsScale.awp,
+    smg: fov / adsScale.smg,
+    lmg: fov / adsScale.lmg,
+    shot: fov / adsScale.shot,
+    rev: fov / adsScale.rev,
+    semi: fov / adsScale.semi,
+    rpg: fov / adsScale.rpg,
+    bow: fov / adsScale.bow,
+    famas: fov / adsScale.famas,
+  };
+
+  var vFovRad = fov * (Math.PI / 180);
+  var hFovRad = 2 * Math.atan((Math.tan(vFovRad / 2) * width) / height);
+
+  $.each(adsFov, (index, value) => {
+    var adsVRad = value * (Math.PI / 180);
+    var adsHRad = 2 * Math.atan((Math.tan(adsVRad / 2) * width) / height);
+    var hip2adsX, hip2adsY;
+    if (distance === "0") {
+      hip2adsX = hipSensX * (Math.tan(adsHRad / 2) / Math.tan(hFovRad / 2));
+      hip2adsY = hipSensY * (Math.tan(adsHRad / 2) / Math.tan(hFovRad / 2));
+    } else {
+      hip2adsX = hipSensX * (Math.atan((distance / 100) * Math.tan(adsHRad / 2)) / Math.atan((distance / 100) * Math.tan(hFovRad / 2)));
+      hip2adsY = hipSensY * (Math.atan((distance / 100) * Math.tan(adsHRad / 2)) / Math.atan((distance / 100) * Math.tan(hFovRad / 2)));
+    }
+
+    var adsSensX = adsScale[index] * hip2adsX;
+    var adsSensY = adsScale[index] * hip2adsY;
+    console.log(index + ": " + adsSensX);
+    console.log(index + ": " + adsSensY);
+    setCXSettings(index + "X", adsSensX);
+    setCXSettings(index + "Y", adsSensY);
+  });
+}
+
 function setRelative(value) {
   value = parseFloat(value);
+  if (!Number.isFinite(value)) value = 0;
   if (value > 100) value = 100;
   if (value < 0) value = 0;
   setCXSettings("relAds", value);
   document.getElementById("slid_relAds").value = value;
   document.getElementById("box_relAds").value = value;
-  //sensCalc();
 }
 
 function scaleSwitchToggle() {

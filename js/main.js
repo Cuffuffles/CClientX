@@ -10,53 +10,45 @@ const clientId = "692917532105113611";
 const io = require("socket.io")();
 var gameWindow = null,
   splashWindow = null;
-var versionNum = "1.1.1";
+var versionNum = "1.1.2";
 io.listen(8081);
 
 function createGameWindow() {
-  gui.Window.open(
-    "https://krunker.io",
-    { inject_js_start: "./js/bundle.js", show: false },
-    (win) => {
-      gameWindow = win;
-      gameWindow.enterFullscreen();
-      gameWindow.on("enter-fullscreen", () => {
-        gameWindow.show();
-        splashWindow.close();
+  gui.Window.open("https://krunker.io", { inject_js_start: "./js/bundle.js", show: false }, (win) => {
+    gameWindow = win;
+    gameWindow.enterFullscreen();
+    gameWindow.on("enter-fullscreen", () => {
+      gameWindow.show();
+      splashWindow.close();
+    });
+    createShortcuts();
+    io.once("connection", (socket) => {
+      socket.once("preloaded", () => {
+        initRPC();
       });
-      createShortcuts();
-      io.once("connection", (socket) => {
-        socket.once("preloaded", () => {
-          initRPC();
+    });
+    io.on("connection", (socket) => {
+      socket.on("preloaded", () => {
+        createListeners();
+      });
+    });
+    win.on("new-win-policy", function (frame, url, policy) {
+      if (!url) return;
+      if (url.startsWith("https://twitch.tv/") || url.startsWith("https://www.twitch.tv") || url.startsWith("https://www.youtube")) {
+        policy.ignore();
+        nw.Shell.openExternal(url);
+        return;
+      } else {
+        policy.setNewWindowManifest({
+          inject_js_start: "./js/socialBundle.js",
+          width: Math.round(screen.width * 0.75),
+          height: Math.round(screen.height * 0.9),
+          position: "center",
         });
-      });
-      io.on("connection", (socket) => {
-        socket.on("preloaded", () => {
-          createListeners();
-        });
-      });
-      win.on("new-win-policy", function (frame, url, policy) {
-        if (!url) return;
-        if (
-          url.startsWith("https://twitch.tv/") ||
-          url.startsWith("https://www.twitch.tv") ||
-          url.startsWith("https://www.youtube")
-        ) {
-          policy.ignore();
-          nw.Shell.openExternal(url);
-          return;
-        } else {
-          policy.setNewWindowManifest({
-            inject_js_start: "./js/socialBundle.js",
-            width: Math.round(screen.width * 0.75),
-            height: Math.round(screen.height * 0.9),
-            position: "center",
-          });
-          policy.forceNewWindow();
-        }
-      });
-    }
-  );
+        policy.forceNewWindow();
+      }
+    });
+  });
 }
 
 function initRPC() {
@@ -127,6 +119,14 @@ function toggleFS() {
   gameWindow.toggleFullscreen();
 }
 
+function restartApp() {
+  var child = child_process.spawn(process.execPath, [], {
+    detached: true,
+  });
+  child.unref();
+  gui.App.quit();
+}
+
 function createSplash() {
   gui.Window.open(
     "./html/splash.html",
@@ -140,50 +140,38 @@ function createSplash() {
     (win) => {
       splashWindow = win;
       //Insert updater code here
-      $.get(
-        "https://api.github.com/repos/Cuffuffles/CClientX/releases/latest",
-        function (data) {
-          var newVersion = data.tag_name;
-          if (semver.gt(newVersion, versionNum)) {
-            //update available
-            var dlPath = nw.App.getStartPath();
-            //splashWindow.window.splashImage.src = "../img/updating.png";
-            splashWindow.window.bar.style.width = "0%";
-            splashWindow.window.dlProgress.style.display = "block";
-            $.get(
-              "https://api.github.com/repos/Cuffuffles/CClientX/releases/latest",
-              function (data) {
-                const pUrl = data.assets[0].browser_download_url;
-                var req = https.get(pUrl, function (res) {
-                  var fileSize = res.headers["content-length"];
-                  res.setEncoding("binary");
-                  var a = "";
-                  res.on("data", function (chunk) {
-                    a += chunk;
-                    splashWindow.window.bar.style.width =
-                      Math.round((100 * a.length) / fileSize) + "%";
-                  });
-                  res.on("end", function () {
-                    fs.writeFile(dlPath + "/package.nw", a, "binary", function (
-                      err
-                    ) {
-                      if (err) console.log(err);
-                      //update done, restart
-                      var child = child_process.spawn(process.execPath, [], {
-                        detached: true,
-                      });
-                      child.unref();
-                      gui.App.quit();
-                    });
-                  });
+      $.get("https://api.github.com/repos/Cuffuffles/CClientX/releases/latest", function (data) {
+        var newVersion = data.tag_name;
+        if (semver.gt(newVersion, versionNum)) {
+          //update available
+          var dlPath = nw.App.getStartPath();
+          //splashWindow.window.splashImage.src = "../img/updating.png";
+          splashWindow.window.bar.style.width = "0%";
+          splashWindow.window.dlProgress.style.display = "block";
+          $.get("https://api.github.com/repos/Cuffuffles/CClientX/releases/latest", function (data) {
+            const pUrl = data.assets[0].browser_download_url;
+            var req = https.get(pUrl, function (res) {
+              var fileSize = res.headers["content-length"];
+              res.setEncoding("binary");
+              var a = "";
+              res.on("data", function (chunk) {
+                a += chunk;
+                splashWindow.window.bar.style.width = Math.round((100 * a.length) / fileSize) + "%";
+              });
+              res.on("end", function () {
+                fs.writeFile(dlPath + "/package.nw", a, "binary", (err) => {
+                  if (err) console.log(err);
+                  restartApp();
                 });
-              }
-            );
-          } else {
-            createGameWindow();
-          }
+              });
+            });
+          }).on("error", () => {
+            restartApp();
+          });
+        } else {
+          createGameWindow();
         }
-      );
+      });
     }
   );
 }
