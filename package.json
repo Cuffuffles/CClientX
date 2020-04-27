@@ -3,9 +3,9 @@
     "author": "Zusier",
     "bg-script": "js/bg.js",
     "bugs": {
-        "url": "https://github.com/Zusier/zusier-client/issues"
+        "url": "https://github.com/Cuffuffles/CClientX/issues"
     },
-    "chromium-args": "--disable-frame-rate-limit --disable-gpu-vsync --ignore-gpu-blacklist --disable-breakpad --disable-component-update --disable-print-preview --disable-metrics --disable-metrics-repo --disable-bundled-ppapi-flash --disable-logging --webrtc-max-cpu-consumption-percentage=100 --enable-zero-copy --disable-2d-canvas-clip-aa --no-referrers --disable-hang-monitor --enable-future-v8-vm-features --enable-javascript-harmony --smooth-scrolling",
+    "chromium-args": "--disable-frame-rate-limit --disable-gpu-vsync --ignore-gpu-blacklist --disable-breakpad --disable-component-update --disable-print-preview --disable-metrics --disable-metrics-repo --disable-bundled-ppapi-flash --disable-logging --webrtc-max-cpu-consumption-percentage=100 --enable-zero-copy --disable-2d-canvas-clip-aa --no-referrers --disable-hang-monitor --enable-future-v8-vm-features --enable-javascript-harmony --smooth-scrolling --force-gpu-rasterization --enable-native-gpu-memory-buffers --enable-gpu-memory-buffer-compositor-resources",
     "dependencies": {
         "browserify": "^16.5.0",
         "discord-rpc": "^3.1.0",
@@ -14,25 +14,25 @@
         "semver": "^7.1.3",
         "socket.io": "^2.3.0"
     },
-    "description": "A fork of CClientX for my own needs",
+    "description": "A fork of CClientX with some customization and small performance improvements",
     "devDependencies": {
         "nw": "^0.44.5-sdk"
     },
-    "homepage": "https://github.com/Zusier/zusier-client/blob/master/README.md",
+    "homepage": "https://github.com/Cuffuffles/CClientX#readme",
     "license": "GPL-3.0",
     "main": "js/main.js",
-    "name": "zusierclient",
+    "name": "cclientx",
     "nodejs": true,
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Zusier/zusier-client"
+        "url": "git+https://github.com/Cuffuffles/CClientX.git"
     },
     "scripts": {
         "build": "browserify ./js/client.js -o ./js/bundle.js && browserify ./js/social.js -o ./js/socialBundle.js",
         "start": "browserify ./js/client.js -o ./js/bundle.js && browserify ./js/social.js -o ./js/socialBundle.js && nw",
         "winCap": "nw --use-angle=gl"
     },
-    "version": "1.0.1",
+    "version": "1.1.3",
     "webexe_settings": {
         "blacklist": "",
         "custom_script": "",
@@ -55,9 +55,10 @@
         "exe_icon": "app.png",
         "fullscreen": true,
         "icon": "img/app.png",
-        "id": "ZusierClient",
+        "id": "first try",
         "mac_icon": "app.png",
         "position": "center",
-        "title": "ZusierClient"
+        "show_in_taskbar": true,
+        "title": "CClientX"
     }
 }
