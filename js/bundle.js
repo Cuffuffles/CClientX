@@ -2,7 +2,7 @@
 const $ = (jQuery = require("jquery"));
 const io = require("socket.io-client");
 const socket = io("http://localhost:8081");
-var versionNum = "1.1.3";
+var versionNum = "1.0.1";
 var weaponID = {
   0: "ak",
   1: "awp",
@@ -63,7 +63,7 @@ function donateButton() {
 
 function watermark() {
   mapInfoHolder.insertAdjacentHTML("beforeend", "<div id='clientVersion' style='font-size: 15px; color: #000'></div>");
-  clientVersion.innerHTML = "<a style='color: #000'>CClientX " + versionNum + "</a>";
+  clientVersion.innerHTML = "<a style='color: #000'>ZusierClient " + versionNum + "</a>";
 }
 
 function setCXSettings(key, value) {

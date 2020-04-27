@@ -1,42 +1,63 @@
 {
-  "name": "cclientx",
-  "version": "1.0.0",
-  "description": "Rewrite of CClient on nwjs",
-  "main": "js/main.js",
-  "window": {
-    "title": "CClientX",
-    "icon": "img/app.png"
-  },
-  "bg-script": "js/bg.js",
-  "scripts": {
-    "start": "browserify ./js/client.js -o ./js/bundle.js && browserify ./js/social.js -o ./js/socialBundle.js && nw",
-    "build": "browserify ./js/client.js -o ./js/bundle.js && browserify ./js/social.js -o ./js/socialBundle.js",
-    "winCap": "nw --use-angle=gl"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Cuffuffles/CClientX.git"
-  },
-  "author": "Cuffuffles",
-  "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://github.com/Cuffuffles/CClientX/issues"
-  },
-  "homepage": "https://github.com/Cuffuffles/CClientX#readme",
-  "devDependencies": {
-    "nw": "^0.44.5-sdk"
-  },
-  "dependencies": {
-    "browserify": "^16.5.0",
-    "discord-rpc": "^3.1.0",
-    "follow-redirects": "^1.10.0",
-    "jquery": "^3.4.1",
-    "semver": "^7.1.3",
-    "socket.io": "^2.3.0"
-  },
-  "webkit": {
-    "java": false,
-    "plugin": false
-  },
-  "chromium-args": "--disable-frame-rate-limit --disable-gpu-vsync --ignore-gpu-blacklist --disable-breakpad --disable-component-update --disable-print-preview --disable-metrics --disable-metrics-repo --disable-bundled-ppapi-flash --disable-logging --webrtc-max-cpu-consumption-percentage=100 --enable-zero-copy --disable-2d-canvas-clip-aa --no-referrers --disable-hang-monitor --enable-future-v8-vm-features --enable-javascript-harmony --smooth-scrolling"
+    "app_name": "ZusierClient",
+    "author": "Zusier",
+    "bg-script": "js/bg.js",
+    "bugs": {
+        "url": "https://github.com/Zusier/zusier-client/issues"
+    },
+    "chromium-args": "--disable-frame-rate-limit --disable-gpu-vsync --ignore-gpu-blacklist --disable-breakpad --disable-component-update --disable-print-preview --disable-metrics --disable-metrics-repo --disable-bundled-ppapi-flash --disable-logging --webrtc-max-cpu-consumption-percentage=100 --enable-zero-copy --disable-2d-canvas-clip-aa --no-referrers --disable-hang-monitor --enable-future-v8-vm-features --enable-javascript-harmony --smooth-scrolling",
+    "dependencies": {
+        "browserify": "^16.5.0",
+        "discord-rpc": "^3.1.0",
+        "follow-redirects": "^1.10.0",
+        "jquery": "^3.4.1",
+        "semver": "^7.1.3",
+        "socket.io": "^2.3.0"
+    },
+    "description": "A fork of CClientX for my own needs",
+    "devDependencies": {
+        "nw": "^0.44.5-sdk"
+    },
+    "homepage": "https://github.com/Zusier/zusier-client/blob/master/README.md",
+    "license": "GPL-3.0",
+    "main": "js/main.js",
+    "name": "zusierclient",
+    "nodejs": true,
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Zusier/zusier-client"
+    },
+    "scripts": {
+        "build": "browserify ./js/client.js -o ./js/bundle.js && browserify ./js/social.js -o ./js/socialBundle.js",
+        "start": "browserify ./js/client.js -o ./js/bundle.js && browserify ./js/social.js -o ./js/socialBundle.js && nw",
+        "winCap": "nw --use-angle=gl"
+    },
+    "version": "1.0.1",
+    "webexe_settings": {
+        "blacklist": "",
+        "custom_script": "",
+        "download_dir": "",
+        "export_dir": "output",
+        "force_download": false,
+        "nw_compression_level": 0,
+        "nw_version": "0.45.4",
+        "output_pattern": "",
+        "sdk_build": false,
+        "uncompressed_folder": false,
+        "whitelist": "",
+        "windows-x64": true
+    },
+    "webkit": {
+        "java": false,
+        "plugin": true
+    },
+    "window": {
+        "exe_icon": "app.png",
+        "fullscreen": true,
+        "icon": "img/app.png",
+        "id": "ZusierClient",
+        "mac_icon": "app.png",
+        "position": "center",
+        "title": "ZusierClient"
+    }
 }

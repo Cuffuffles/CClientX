@@ -6,11 +6,11 @@ const child_process = require("child_process");
 const $ = (jQuery = require("jquery"));
 const rpclient = require("discord-rpc");
 const rpc = new rpclient.Client({ transport: "ipc" });
-const clientId = "692917532105113611";
+const clientId = "704051068832841839";
 const io = require("socket.io")();
 var gameWindow = null,
   splashWindow = null;
-var versionNum = "1.1.3";
+var versionNum = "1.0.1";
 io.listen(8081);
 
 function createGameWindow() {
@@ -86,7 +86,7 @@ function createListeners() {
     gameWindow.close();
   });
   browser.clientVersion.addEventListener("click", () => {
-    nw.Shell.openExternal("https://discord.gg/5ZMvrGT");
+    nw.Shell.openExternal("https://discord.gg/zHJhGbz");
   });
 }
 
@@ -140,7 +140,7 @@ function createSplash() {
     (win) => {
       splashWindow = win;
       //Insert updater code here
-      $.get("https://api.github.com/repos/Cuffuffles/CClientX/releases/latest", function (data) {
+      $.get("https://github.com/Zusier/zusier-client/releases/latest", function (data) {
         var newVersion = data.tag_name;
         if (semver.gt(newVersion, versionNum)) {
           //update available
@@ -148,7 +148,7 @@ function createSplash() {
           //splashWindow.window.splashImage.src = "../img/updating.png";
           splashWindow.window.bar.style.width = "0%";
           splashWindow.window.dlProgress.style.display = "block";
-          $.get("https://api.github.com/repos/Cuffuffles/CClientX/releases/latest", function (data) {
+          $.get("https://api.github.com/repos/Zusier/zusier-client/releases/latest", function (data) {
             const pUrl = data.assets[0].browser_download_url;
             var req = https.get(pUrl, function (res) {
               var fileSize = res.headers["content-length"];
