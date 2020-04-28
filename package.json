@@ -21,7 +21,7 @@
     "homepage": "https://github.com/Cuffuffles/CClientX#readme",
     "license": "GPL-3.0",
     "main": "js/main.js",
-    "name": "cclientx",
+    "name": "zusierclient",
     "nodejs": true,
     "repository": {
         "type": "git",
@@ -39,6 +39,8 @@
         "download_dir": "",
         "export_dir": "output",
         "force_download": false,
+        "linux-x64": false,
+        "mac-x64": false,
         "nw_compression_level": 0,
         "nw_version": "0.45.4",
         "output_pattern": "",

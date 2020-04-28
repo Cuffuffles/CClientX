@@ -38,7 +38,7 @@ function fixLinks() {
 }
 
 function addExit() {
-  var buttonHtml = "<div class='button small buttonR' id='menuExit' onmouseenter='playTick()'>X</div>";
+  var buttonHtml = "<div class='button small buttonR' id='menuExit' onmouseenter='playTick()'>✘</div>";
   subLogoButtons.insertAdjacentHTML("beforeend", buttonHtml);
   subLogoButtons.style.width = "860px";
 }
@@ -62,7 +62,7 @@ function donateButton() {
 
 function watermark() {
   mapInfoHolder.insertAdjacentHTML("beforeend", "<div id='clientVersion' style='font-size: 15px; color: #000'></div>");
-  clientVersion.innerHTML = "<a style='color: #000'>CClientX " + versionNum + "</a>";
+  clientVersion.innerHTML = "<a style='color: #000'>ZClient " + versionNum + "</a>";
 }
 
 function setCXSettings(key, value) {
