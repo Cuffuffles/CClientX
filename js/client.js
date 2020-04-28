@@ -24,10 +24,20 @@ function init() {
   donateButton();
   fixLinks();
   initMenus();
+  mainLogoImage();
 
   //Tell main we're done with preload
   socket.emit("preloaded");
   socket.close();
+}
+
+function mainLogoImage() {
+  if (getCXSettings("mainLogo") === null || getCXSettings("mainLogo") == "") setCXSettings("mainLogo", "unchecked");
+  if (getCXSettings("mainLogo") === "unchecked") {
+    mainLogo.src = "https://i.imgur.com/osHufNd.png";
+  } else if (getCXSettings("mainLogo") === "checked") {
+    mainLogo.src = "/img/logo_2.png";
+  }
 }
 
 function fixLinks() {
@@ -119,9 +129,29 @@ function initMenus() {
           controller = true;
         }
       });
+      logocheck.addEventListener("click", () => {
+        logoToggle();
+      });
     }, 5);
-    return "";
+    var menuHtml = '<div class="setHed">CClientX Settings</div>';
+    menuHtml +=
+      '<div class="settName" id="logo_div" style="display:block">Restore Krunker Logo<label class="switch"><input type="checkbox" id="logocheck" ' +
+      getCXSettings("mainLogo") +
+      '><span class="slider"></span></label></div>';
+    return menuHtml;
   };
+}
+
+function logoToggle() {
+  switch (getCXSettings("mainLogo")) {
+    case "unchecked":
+      setCXSettings("mainLogo", "checked");
+      break;
+    default:
+      setCXSettings("mainLogo", "unchecked");
+      break;
+  }
+  mainLogoImage();
 }
 
 function newEnterGame() {
