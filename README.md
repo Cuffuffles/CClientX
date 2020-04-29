@@ -1,5 +1,5 @@
 # Zusier-Client
-Before I begin, This is a fork of CClientX and up to 99% of this is Cuffuffles work, So please check his out. Because Cuff is going for a more Proffesional look from now on, I'm going to keep that nice, MSPaint feeling (though im using photoshop) + The Zero Two Best Girl shit.
+Before I begin, This is a fork of CClientX and up to 99.99% of this is Cuffuffles work, So please check his out. Because Cuff is going for a more Proffesional look from now on, I'm going to keep that nice, MSPaint feeling (though im using photoshop) + Zero Two Best Girl shit.
 
 # Installation
 Note: If you expect cloning the source code is gonna get you anywhere close to getting the client, it isnt. Unless you know how to compile it.
