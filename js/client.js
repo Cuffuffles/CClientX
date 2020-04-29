@@ -1,7 +1,7 @@
 const $ = (jQuery = require("jquery"));
 const io = require("socket.io-client");
 const socket = io("http://localhost:8081");
-var versionNum = "1.1.3";
+var versionNum = "1.1.4";
 var weaponID = {
   0: "ak",
   1: "awp",
@@ -24,10 +24,20 @@ function init() {
   donateButton();
   fixLinks();
   initMenus();
+  mainLogoImage();
 
   //Tell main we're done with preload
   socket.emit("preloaded");
   socket.close();
+}
+
+function mainLogoImage() {
+  if (getCXSettings("mainLogo") === null || getCXSettings("mainLogo") == "") setCXSettings("mainLogo", "unchecked");
+  if (getCXSettings("mainLogo") === "unchecked") {
+    mainLogo.src = "https://i.imgur.com/xM8tYA4.png";
+  } else if (getCXSettings("mainLogo") === "checked") {
+    mainLogo.src = "/img/logo_2.png";
+  }
 }
 
 function fixLinks() {
@@ -38,7 +48,7 @@ function fixLinks() {
 }
 
 function addExit() {
-  var buttonHtml = "<div class='button small buttonR' id='menuExit' onmouseenter='playTick()'>✘</div>";
+  var buttonHtml = "<div class='button small buttonR' id='menuExit' onmouseenter='playTick()'>X</div>";
   subLogoButtons.insertAdjacentHTML("beforeend", buttonHtml);
   subLogoButtons.style.width = "860px";
 }
@@ -119,9 +129,29 @@ function initMenus() {
           controller = true;
         }
       });
+      logocheck.addEventListener("click", () => {
+        logoToggle();
+      });
     }, 5);
-    return "";
+    var menuHtml = '<div class="setHed">ZClient Settings</div>';
+    menuHtml +=
+      '<div class="settName" id="logo_div" style="display:block">Restore Logo<label class="switch"><input type="checkbox" id="logocheck" ' +
+      getCXSettings("mainLogo") +
+      '><span class="slider"></span></label></div>';
+    return menuHtml;
   };
+}
+
+function logoToggle() {
+  switch (getCXSettings("mainLogo")) {
+    case "unchecked":
+      setCXSettings("mainLogo", "checked");
+      break;
+    default:
+      setCXSettings("mainLogo", "unchecked");
+      break;
+  }
+  mainLogoImage();
 }
 
 function newEnterGame() {

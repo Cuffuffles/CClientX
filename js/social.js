@@ -19,6 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function donate() {
   setTimeout(() => {
-    giftPopup("Cuffuffles");
+    giftPopup("Zusier_on_STD");
   }, 500);
 }
