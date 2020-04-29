@@ -8,7 +8,6 @@ Windows Has Been the only one tested, honestly too lazy to get a mac Virtual Mac
 - [Windows](https://mega.nz/file/fmhXAAaL#IATbXzPYwDfPa-Ax1EJjtABYhqmNVDtXHBvO-ookgG8)
 - [Linux](https://mega.nz/file/D6oEmQhQ#540J1xoxUFWrD3Z_OLPC4kgUV5PpGMx5mBPFDMo8abY)
 - [Mac](https://mega.nz/file/X3gEgQKA#Q9bM7UULuD6YGgeAhFB0AOGRX111t3EGTwHyMBmYIa8)
- The MacNoCustomFix is regular CCX but for mac, I've been in contact with Cuffuffles and he is adding it to his repo.
  
  # Disclaimer 
  This disclaimer is about infections, malware and the chance this could be a virus/backdoored.
