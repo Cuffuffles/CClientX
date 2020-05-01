@@ -14,7 +14,7 @@
     },
     "description": "fork of CCX with personal customization and small performance improvement",
     "devDependencies": {
-        "browserify": "^16.5.0",
+        "browserify": "^16.5.1",
         "nw": "^0.44.5-sdk"
     },
     "homepage": "https://github.com/Cuffuffles/CClientX#readme",
