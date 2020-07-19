@@ -25,10 +25,25 @@ function init() {
   fixLinks();
   initMenus();
   mainLogoImage();
+  profileJoin();
 
   //Tell main we're done with preload
   socket.emit("preloaded");
   socket.close();
+}
+
+function profileJoin() {
+  let btn = document.getElementById("menuBtnJoin")
+  btn.onclick = function() {
+    navigator.clipboard.readText()
+      .then(text => {
+      if(text.includes("krunker.io/social.html?p=profile&q=")) {
+        window.open(text);
+      } else {
+        openJoinWindow();
+      }
+    });
+  }
 }
 
 function mainLogoImage() {
@@ -36,7 +51,7 @@ function mainLogoImage() {
   if (getCXSettings("mainLogo") === "unchecked") {
     mainLogo.src = "https://i.imgur.com/osHufNd.png";
   } else if (getCXSettings("mainLogo") === "checked") {
-    mainLogo.src = "/img/logo_2.png";
+    mainLogo.src = "/img/logo_4.png";
   }
 }
 
