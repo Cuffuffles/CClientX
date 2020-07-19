@@ -10,7 +10,7 @@ const clientId = "692917532105113611";
 const io = require("socket.io")();
 var gameWindow = null,
   splashWindow = null;
-var versionNum = "1.1.4";
+var versionNum = "1.1.5";
 io.listen(8081);
 
 function createGameWindow() {

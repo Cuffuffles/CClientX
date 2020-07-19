@@ -2,7 +2,7 @@
 const $ = (jQuery = require("jquery"));
 const io = require("socket.io-client");
 const socket = io("http://localhost:8081");
-var versionNum = "1.1.4";
+var versionNum = "1.1.5";
 var weaponID = {
   0: "ak",
   1: "awp",
@@ -45,7 +45,6 @@ function profileJoin() {
       }
     });
   }
-  console.log("ran");
 }
 
 function mainLogoImage() {
