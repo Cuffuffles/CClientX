@@ -40,6 +40,8 @@ function profileJoin() {
       .then(text => {
       if(text.includes("krunker.io/social.html?p=profile&q=")) {
         window.open(text);
+      } else if(text.includes("krunker.io/?game=")) {
+        window.location = text;
       } else {
         openJoinWindow();
       }

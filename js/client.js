@@ -1,7 +1,7 @@
 const $ = (jQuery = require("jquery"));
 const io = require("socket.io-client");
 const socket = io("http://localhost:8081");
-var versionNum = "1.1.5";
+var versionNum = "1.1.6";
 var weaponID = {
   0: "ak",
   1: "awp",
@@ -39,6 +39,8 @@ function profileJoin() {
       .then(text => {
       if(text.includes("krunker.io/social.html?p=profile&q=")) {
         window.open(text);
+      } else if(text.includes("krunker.io/?game=")) {
+        window.location = text;
       } else {
         openJoinWindow();
       }
